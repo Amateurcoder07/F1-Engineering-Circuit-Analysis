@@ -1,0 +1,9 @@
+create view v_F1_Geometric_Efficiency as
+select
+c. name as CircuitName, c.track_length_km,
+c.corner_count,
+(cast(c.corner_count as float) / c.track_length_km) as CornerDensity, avg(res.fastest LapSpeed) as MeanSpeed_KPH
+from results res
+JOIN races ra on res.raceId = ra.raceId
+JOIN circuits c on ra.circuitId = c. circuitId
+where c.track_length_km > AND res.fastestLapSpeed > 0 group by c.name, c.track_length_km, c.corner_count;

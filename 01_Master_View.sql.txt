@@ -1,0 +1,19 @@
+create view v_F1_Engineering_Master as
+select
+r.name as RaceName, r. year as RaceYear, c. name as CircuitName, c. location as City, c. country as Country, c.alt as Altitude_Meters, c.track_length_km, c.corner_count, c.elevation_change_m,
+c.circuit_type,
+case
+when c.track_length_km> then (c.corner_count/c.track_length_km)
+else null
+end as CornerDensity,
+res.grid as StartPos,
+res.positionOrder as FinishPos,
+(res.grid res. positionOrder) as OvertakingScore,
+res.fastestLapSpeed as AvgSpeed_KPH,
+s.status as RaceStatus
+from results res
+join races r on res.raceId = r.raceId
+join circuits con r.circuitId = c.circuit Id
+join status s on res.statusId = s.statusId
+where res.fastestLapSpeed is not null;
+go
